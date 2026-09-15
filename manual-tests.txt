@@ -62,3 +62,10 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 * Should display "Developer" for the user name.
 
 
+# Module 4: Ensure input only accepts card numbers
+## Test steps
+1. Build and run CiCo.
+2. Enter "abcd" into the field.
+
+## Expected results
+* The field should not accept the input and should remain empty.
