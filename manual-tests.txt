@@ -69,3 +69,12 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 
 ## Expected results
 * The field should not accept the input and should remain empty.
+
+# Module 5: Add button to return to main screen
+## Test steps
+1. Build and run CiCo.
+2. Enter 00000000 into the field and click Update.
+3. Click the "Return to Main" button.
+
+## Expected results
+* The main panel should appear after step 3 with an empty field.
