@@ -34,33 +34,44 @@ public class Main {
 
   // Internal classes ///////////////////////////////////////////////////////////
   // InputFilter manages user input to the card number field.
-  private static class InputFilter extends DocumentFilter {
-    private static final int MAX_LENGTH = 8;
+private static class InputFilter extends DocumentFilter {
+  private static final int MAX_LENGTH = 8;
 
-    @Override
-    public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (stringToAdd == null || stringToAdd.matches("\\d*")) {
-        super.insertString(fb, offset, stringToAdd, attr);
+  private void checkLength(FilterBypass fb) {
+    SwingUtilities.invokeLater(() -> {
+      if (fb.getDocument().getLength() == MAX_LENGTH) {
+        Main.processCard();
       }
-      else {
-        Toolkit.getDefaultToolkit().beep();
-      }
+    });
+  }
+
+  @Override
+  public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
+      throws BadLocationException
+  {
+    if (stringToAdd == null || stringToAdd.matches("\\d*")) {
+      super.insertString(fb, offset, stringToAdd, attr);
+      checkLength(fb);
     }
-
-    @Override
-    public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (stringToAdd == null || stringToAdd.matches("\\d*")) {
-        super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
-      }
-      else {
-        Toolkit.getDefaultToolkit().beep();
-      }
+    else {
+      Toolkit.getDefaultToolkit().beep();
     }
   }
+
+  @Override
+  public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
+      throws BadLocationException
+  {
+    if (stringToAdd == null || stringToAdd.matches("\\d*")) {
+      super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
+      checkLength(fb);
+    }
+    else {
+      Toolkit.getDefaultToolkit().beep();
+    }
+  }
+}
+
 
   // Lookup the card information after button press ///////////////////////////
   public static class Update implements ActionListener {
@@ -259,12 +270,6 @@ public class Main {
     fieldNumber.setBackground(Color.green);
     fieldNumber.setForeground(Color.magenta);
     panelMain.add(fieldNumber);
-
-    JButton updateButton = new JButton("Update");
-    updateButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-    updateButton.addActionListener(new Update());
-    updateButton.setForeground(Color.green);
-    panelMain.add(updateButton);
 
     panelMain.add(Box.createVerticalGlue());
 
